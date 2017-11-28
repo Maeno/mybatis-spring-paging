@@ -1,5 +1,5 @@
 # mybatis-spring-paging
-This sample is for paging using mybatis, spring and thymeleaf.
+This sample is for paging using mybatis, spring and thymeleaf.  
 The paging needs when a large amount of data matches the search criteria,  
 
 ## Draft API
