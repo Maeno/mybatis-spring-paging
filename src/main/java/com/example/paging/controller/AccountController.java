@@ -1,7 +1,7 @@
 package com.example.paging.controller;
 
 import com.example.paging.api.Page;
-import com.example.paging.api.PageConditon;
+import com.example.paging.api.PageCondition;
 import com.example.paging.domain.Account;
 import com.example.paging.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping("/paging")
 @Controller
-public class PagingController {
+public class AccountController {
 
     private final AccountService accountService;
 
     @Autowired
-    public PagingController(final AccountService accountService) {
+    public AccountController(final AccountService accountService) {
         this.accountService = accountService;
     }
 
@@ -25,10 +25,10 @@ public class PagingController {
     public ModelAndView list () {
         final ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("list");
-        final PageConditon pageConditon = new PageConditon(1, 20);
-        Page<Account> page = accountService.list(pageConditon);
+        final PageCondition pageCondition = new PageCondition(1, 20);
+        Page<Account> page = accountService.list(pageCondition);
         modelAndView.addObject("accountList", page.getItems());
-        modelAndView.addObject("page", page.getPageConditon());
+        modelAndView.addObject("page", page.getPageInformation());
         return modelAndView;
     }
 }

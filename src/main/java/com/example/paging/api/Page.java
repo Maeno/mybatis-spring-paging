@@ -4,16 +4,16 @@ import java.util.List;
 
 public class Page<T> {
 
-    private PageConditon pageConditon;
+    private PageInformation pageInformation;
 
     private List<T> items;
 
-    public PageConditon getPageConditon() {
-        return pageConditon;
+    public PageInformation getPageInformation() {
+        return pageInformation;
     }
 
-    public void setPageConditon(final PageConditon pageConditon) {
-        this.pageConditon = pageConditon;
+    public void setPageInformation(PageInformation pageInformation) {
+        this.pageInformation = pageInformation;
     }
 
     public List<T> getItems() {

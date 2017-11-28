@@ -1,7 +1,8 @@
 package com.example.paging.service;
 
 import com.example.paging.api.Page;
-import com.example.paging.api.PageConditon;
+import com.example.paging.api.PageCondition;
+import com.example.paging.api.PageInformation;
 import com.example.paging.domain.Account;
 import com.example.paging.repository.AccountMapper;
 import org.apache.ibatis.session.RowBounds;
@@ -20,31 +21,17 @@ public class AccountService {
         this.accountMapper = accountMapper;
     }
 
-    public Page<Account> list(final PageConditon pageConditon) {
+    public Page<Account> list(final PageCondition pageCondition) {
         final int count = accountMapper.count();
-        pageConditon.setTotalRecords(count);
 
-        final int totalPages = (int)Math.ceil(count / pageConditon.getPageSize());
-        pageConditon.setTotalPages(totalPages);
+        final Page<Account> page = new Page<>();
+        final PageInformation pageInformation =
+                new PageInformation.Builder(pageCondition.getPageNo(), pageCondition.getPageSize())
+                        .totalRecords(count).build();
+        page.setPageInformation(pageInformation);
 
-        if (pageConditon.getPageNo() == 1) {
-            pageConditon.setFirst(true);
-            pageConditon.setLast(false);
-        } else if (pageConditon.getPageNo() == pageConditon.getTotalPages()) {
-            pageConditon.setFirst(false);
-            pageConditon.setLast(true);
-        } else {
-            pageConditon.setFirst(true);
-            pageConditon.setLast(true);
-        }
-
-        final Page<Account> page = new Page<Account>();
-        page.setPageConditon(pageConditon);
-
-        final int offset = (pageConditon.getPageNo() - 1) * pageConditon.getPageSize();
-        final int limit = pageConditon.getPageSize();
-
-        final List<Account> select = accountMapper.select(new RowBounds(offset, limit));
+        final List<Account> select = accountMapper.select(
+                new RowBounds(pageInformation.getOffset(), pageInformation.getLimit()));
         page.setItems(select);
 
         return page;
